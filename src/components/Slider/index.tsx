@@ -36,32 +36,13 @@ export function Slider({ isOpen, onClose, children, height = '25vh', zIndex = 50
 
   return (
     <div
-      className={`fixed inset-0 bg-black flex items-end transition-opacity duration-300 ${
+      className={`fixed inset-0 bg-black flex items-end   ${
         isVisible ? 'bg-opacity-50' : 'bg-opacity-0'
       }`}
       style={{ zIndex }}
       onClick={onClose}
     >
-      {/* Close Button */}
-      <button
-        onClick={onClose}
-        onTouchStart={(e) => e.preventDefault()}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          onClose();
-        }}
-        className="absolute"
-        style={{
-          top: `calc(100vh - ${height} - 40px)`, // Position above the slider
-          right: '20px',
-          WebkitTapHighlightColor: 'transparent',
-          touchAction: 'manipulation',
-          zIndex: zIndex + 1,
-        }}
-      >
-        <img src={closeIcon} alt="Close" style={{ width: '19px', height: '19px' }} />
-      </button>
-
+      
       {/* Bottom Sheet Panel */}
       <div
         className={`w-full transition-transform duration-300 ease-out ${

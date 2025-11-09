@@ -19,10 +19,16 @@ export function Deposit({ setCurrentPage }: DepositProps) {
     setLoading(true);
     setError(null);
     try {
-      const depositData = await apiService.initiateDeposit(currency);
+      // const depositData = await apiService.initiateDeposit(currency);
+      // setCurrentPage('confirmDeposit', {
+      //   address: depositData.address,
+      //   trackerId: depositData.trackerId, // Преобразуем tracker_id в trackerId
+      //   currency, // Явно задаем currency из аргумента
+      // });
+    
       setCurrentPage('confirmDeposit', {
-        address: depositData.address,
-        trackerId: depositData.trackerId, // Преобразуем tracker_id в trackerId
+        address: 'EQCxE6mUtQJKFnGfaROTKOt1IZbDiiX1kCixRv7Nw2Id_sDs',
+        trackerId: 'EQCxE6mUtQJKFnGfaROTKOt1IZbDiiX1kCixRv7Nw2Id_sDs', // Преобразуем tracker_id в trackerId
         currency, // Явно задаем currency из аргумента
       });
     } catch (error) {

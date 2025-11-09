@@ -54,7 +54,7 @@ export const ConnectRoom: React.FC<ConnectRoomProps> = ({ onClose, openModal, se
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-[#47444C] w-[316px] h-[172px] rounded-lg flex flex-col items-center py-4 px-4 relative animate-slide-up">
+      <div className="bg-[#47444C] w-[316px] h-[172px] rounded-lg flex flex-col items-center py-4 px-4 relative ">
         <h2 className="text-white font-semibold text-lg mb-4">{t('join_room')}</h2>
         {error && (
           <p className="text-red-500 text-sm mb-2">{error}</p>
@@ -67,7 +67,7 @@ export const ConnectRoom: React.FC<ConnectRoomProps> = ({ onClose, openModal, se
             value={inputValue}
             onChange={handleInputChange}
             placeholder={t('password_for_entry')}
-            className="bg-[#13121780] text-[#808797] text-center text-xs font-normal w-full h-12 rounded-lg pl-10 pr-10"
+            className="bg-[#13121780] text-white text-center text-base font-normal w-full h-12 rounded-lg pl-10 pr-10"
           />
           <img src={isValid ? completeIcon : incompleteIcon} alt="complete" className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6" />
         </div>

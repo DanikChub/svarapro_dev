@@ -35,7 +35,7 @@ interface PlayerSpotProps {
   isCurrentUser: boolean;
   showCards: boolean;
   scale?: number;
-  cardSide?: "left" | "right";
+  cardSide?: "left" | "right" | "top" | "bottom";
   openCardsPosition?: "top" | "bottom" | "left" | "right";
   isTurn?: boolean;
   turnTimer?: number;
@@ -211,48 +211,133 @@ export function PlayerSpot({
     </div>
   );
 
-  const CardDeckComponent = (
-    <div className="flex flex-col items-center space-y-1">
-      <div className="relative" style={{ width: "42px", height: "42px" }}>
-        <img
-          src={cardBack}
-          alt="card back"
-          className="absolute rounded-sm"
-          style={{
-            width: "30px",
-            height: "42px",
-            zIndex: 3,
-            top: "0",
-            left: "0",
-          }}
-        />
-        <img
-          src={cardBack}
-          alt="card back"
-          className="absolute rounded-sm"
-          style={{
-            width: "30px",
-            height: "42px",
-            zIndex: 2,
-            top: "0",
-            left: "4px",
-          }}
-        />
-        <img
-          src={cardBack}
-          alt="card back"
-          className="absolute rounded-sm"
-          style={{
-            width: "30px",
-            height: "42px",
-            zIndex: 1,
-            top: "0",
-            left: "8px",
-          }}
-        />
-      </div>
-    </div>
-  );
+  const CardDeckComponent = (type: string) =>  {
+    if (type == 'right') {
+      return <div className="flex flex-col items-center space-y-1">
+          <div className="relative" style={{ width: "42px", height: "42px" }}>
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 3,
+                top: "0",
+                left: "0",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 2,
+                top: "0",
+                left: "4px",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 1,
+                top: "0",
+                left: "8px",
+              }}
+            />
+          </div>
+          </div>
+    } else if (type == 'left') {
+      return <div className="flex flex-col items-center space-y-1">
+          <div className="relative" style={{ width: "42px", height: "42px" }}>
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 3,
+                top: "0",
+                left: "0",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 2,
+                top: "0",
+                left: "-4px",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 1,
+                top: "0",
+                left: "-8px",
+              }}
+            />
+          </div>
+          </div>
+    } else {
+      return <div className="flex flex-col items-center space-y-1">
+          <div className="relative" style={{ width: "42px", height: "42px" }}>
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 3,
+                top: "0",
+                left: "0",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 2,
+                top: "0",
+                left: "4px",
+              }}
+            />
+            <img
+              src={cardBack}
+              alt="card back"
+              className="absolute rounded-sm"
+              style={{
+                width: "30px",
+                height: "42px",
+                zIndex: 1,
+                top: "0",
+                left: "8px",
+              }}
+            />
+          </div>
+          </div>
+    }
+    
+  };
 
   useEffect(() => {
     if (!playerPosition || !gameState?.status) return;
@@ -352,7 +437,7 @@ export function PlayerSpot({
                   style={{ width: `${nameWidth}px`, height: `${nameHeight}px` }}
                 >
                   <div
-                    className="absolute inset-0"
+                    className=" inset-0"
                     style={{
                       borderRadius: `${8 * scale}px`,
                       background:
@@ -684,28 +769,34 @@ export function PlayerSpot({
         {!hasFolded && (
           <div
             className={cn(
-              "absolute z-30 top-10 -translate-y-1/2 flex items-center space-x-2",
+              "absolute z-30 top-8 -translate-y-1/2 flex items-center space-x-2",
               {
-                "-right-[60px]": cardSide === "right",
-                "-left-[60px]": cardSide === "left",
-                "left-[53%] -translate-x-[22%]":
+                "-right-[22px]": cardSide === "right",
+                "-left-[13px]": cardSide === "left",
+                "left-[53%] -translate-x-[25%]":
                   openCardsPosition === "bottom" || openCardsPosition === "top",
-                "-bottom-16 top-auto": openCardsPosition === "bottom",
-                "-top-11": openCardsPosition === "top",
+             
+                "left-[53px]": openCardsPosition === "top" || openCardsPosition === "bottom",
               }
             )}
           >
-            {cardSide === "left" && !isCurrentUser && TotalBetComponent}
+
             {!(isCurrentUser && hasLooked) &&
               gameState?.status !== "finished" &&
               gameState?.status !== "waiting" &&
               gameState?.status !== "ante" &&
               gameState?.status !== "showdown" &&
-              CardDeckComponent}
-            {cardSide === "right" && !isCurrentUser && TotalBetComponent}
+              CardDeckComponent(cardSide)}      
+           
           </div>
         )}
-
+        <div className="absolute w-full h-full top-[0] -left-[0]">
+          {cardSide === "left" && !isCurrentUser && <div className="absolute left-[-55px] top-[23px]">{TotalBetComponent}</div>}
+            
+            {cardSide === "right" && !isCurrentUser && <div className="absolute right-[-52px] top-[23px]">{TotalBetComponent}</div>}
+            {cardSide === "top" && !isCurrentUser && <div className="absolute left-[16px] bottom-[-40px]">{TotalBetComponent}</div>}
+            {cardSide === "bottom" && !isCurrentUser && <div className="absolute left-[16px] top-[-56px]">{TotalBetComponent}</div>}
+        </div>
         {/* {(() => {
           // For other players, show last action amount
           if (!isCurrentUser) {

@@ -12,6 +12,7 @@ export function Room({ roomId, players, stake, setCurrentPage, balance, setNotif
   const [isLoading, setIsLoading] = useState(false);
 
   const handleJoin = async () => {
+    setCurrentPage('gameRoom', { roomId, autoSit: true });
     const hasEnoughBalance = parseFloat(balance) >= stake * 10;
     if (!hasEnoughBalance) {
       setNotification('insufficientBalance');
@@ -20,6 +21,7 @@ export function Room({ roomId, players, stake, setCurrentPage, balance, setNotif
 
     setIsJoining(true);
     setIsLoading(true);
+
     try {
       await apiService.joinRoom(roomId);
       setCurrentPage('gameRoom', { roomId, autoSit: true });
@@ -58,20 +60,20 @@ export function Room({ roomId, players, stake, setCurrentPage, balance, setNotif
 
   return (
     <StyledContainer 
-      className="w-[95vw] h-[105px] p-4 rounded-[15px]"
+      className="w-[100%] h-[105px] p-4 rounded-[15px]"
     >
       <div
         className="grid"
         style={{
           gridTemplateColumns: '1fr 1fr 1fr 1fr',
           gridTemplateRows: 'auto auto',
-          gap: '10px 25px',
-          alignItems: 'center',
+          gap: '6px 25px',
+         
         }}
       >
-        <p className="text-sm font-semibold text-gray-400 text-center m-0">{t('room')}</p>
-        <p className="text-sm font-semibold text-gray-400 text-center m-0">{t('players')}</p>
-        <p className="text-sm font-semibold text-gray-400 text-center m-0">{t('stake')}</p>
+        <p className="text-sm font-semibold text-[#C9C6CE] text-center m-0">{t('room')}</p>
+        <p className="text-sm font-semibold text-[#C9C6CE] text-center m-0">{t('players')}</p>
+        <p className="text-sm font-semibold text-[#C9C6CE] text-center m-0">{t('stake')}</p>
         <YellowButton 
           style={{ marginTop: '5px' }} 
           onClick={handleJoin}
@@ -110,7 +112,7 @@ export function Room({ roomId, players, stake, setCurrentPage, balance, setNotif
             border: 'none',
             cursor: 'pointer',
             width: '100%',
-            marginTop: '5px',
+            marginTop: '3px',
           }}
           onClick={handleWatch}
           disabled={isJoining}

@@ -24,6 +24,8 @@ import { Notification } from "./components/Notification";
 import { NotificationType } from "./types/components";
 import { PositionsProvider } from "./context/PositionsContext";
 
+import { TurnPhoneOver } from "./components/TurnPhoneOver";
+
 interface LaunchParams {
   initData?: string;
   tgWebAppData?: Record<string, string | Record<string, unknown>>;
@@ -98,6 +100,25 @@ function App() {
   const [notification, setNotification] = useState<NotificationType | null>(
     null
   );
+  const [isPhoneVertical, setIsPhoneVertical] = useState(false);
+
+  useEffect(() => {
+
+    if (window.innerWidth >= window.innerHeight) {
+      setIsPhoneVertical(false);
+    } else {
+      setIsPhoneVertical(true);
+    }
+
+    window.addEventListener('resize', () => {
+      console.log(window.innerWidth, window.innerHeight);
+      if (window.innerWidth >= window.innerHeight) {
+        setIsPhoneVertical(false);
+      } else {
+        setIsPhoneVertical(true);
+      }
+    })
+  }, [])
 
   const { updateAvailable, updateApp } = useAppUpdate();
 
@@ -131,150 +152,151 @@ function App() {
   };
 
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        await initTelegramSdk();
-        setIsSdkInitialized(true);
-      } catch (e) {
-        console.error("Failed to initialize SDK:", e);
-        setError("Failed to initialize Telegram SDK");
-      }
+    // const initialize = async () => {
+    //   try {
+    //     await initTelegramSdk();
+    //     setIsSdkInitialized(true);
+    //   } catch (e) {
+    //     console.error("Failed to initialize SDK:", e);
+    //     setError("Failed to initialize Telegram SDK");
+    //   }
 
-      const launchParams = retrieveLaunchParams() as LaunchParams;
+    //   const launchParams = retrieveLaunchParams() as LaunchParams;
 
-      let initData: string | undefined = launchParams.initData;
-      if (!initData && launchParams.tgWebAppData) {
-        initData = new URLSearchParams(
-          Object.entries(launchParams.tgWebAppData)
-            .filter(([key]) => key !== "hash" && key !== "signature")
-            .map(([key, value]) => {
-              if (typeof value === "object" && value !== null) {
-                return [key, JSON.stringify(value)];
-              }
-              return [key, value.toString()];
-            })
-        ).toString();
-      }
+    //   let initData: string | undefined = launchParams.initData;
+    //   if (!initData && launchParams.tgWebAppData) {
+    //     initData = new URLSearchParams(
+    //       Object.entries(launchParams.tgWebAppData)
+    //         .filter(([key]) => key !== "hash" && key !== "signature")
+    //         .map(([key, value]) => {
+    //           if (typeof value === "object" && value !== null) {
+    //             return [key, JSON.stringify(value)];
+    //           }
+    //           return [key, value.toString()];
+    //         })
+    //     ).toString();
+    //   }
 
-      const loadData = async () => {
-        if (!initData) {
-          setError("Telegram initialization data not found.");
-          return;
-        }
+    //   const loadData = async () => {
+    //     if (!initData) {
+    //       setError("Telegram initialization data not found.");
+    //       return;
+    //     }
 
-        try {
-          let roomIdFromPayload: string | undefined = undefined;
-          let referrerIdFromPayload: string | undefined = undefined;
+    //     try {
+    //       let roomIdFromPayload: string | undefined = undefined;
+    //       let referrerIdFromPayload: string | undefined = undefined;
 
-          if (
-            launchParams.startPayload &&
-            launchParams.startPayload.startsWith("join_")
-          ) {
-            const parts = launchParams.startPayload.split("_");
-            if (parts.length > 2) {
-              // join_roomId_referrerId
-              roomIdFromPayload = parts[1];
-              referrerIdFromPayload = parts[2];
-            }
-          } else if (launchParams.startPayload) {
-            referrerIdFromPayload = launchParams.startPayload;
-          }
+    //       if (
+    //         launchParams.startPayload &&
+    //         launchParams.startPayload.startsWith("join_")
+    //       ) {
+    //         const parts = launchParams.startPayload.split("_");
+    //         if (parts.length > 2) {
+    //           // join_roomId_referrerId
+    //           roomIdFromPayload = parts[1];
+    //           referrerIdFromPayload = parts[2];
+    //         }
+    //       } else if (launchParams.startPayload) {
+    //         referrerIdFromPayload = launchParams.startPayload;
+    //       }
 
-          await apiService.login(initData, referrerIdFromPayload);
+    //       await apiService.login(initData, referrerIdFromPayload);
 
-          const profile = (await apiService.getProfile()) as UserProfile;
-          setBalance(
-            profile.balance !== undefined
-              ? typeof profile.balance === "number"
-                ? profile.balance.toFixed(2)
-                : parseFloat(profile.balance).toFixed(2)
-              : "0.00"
-          );
-          setWalletAddress(profile.walletAddress || null);
+    //       const profile = (await apiService.getProfile()) as UserProfile;
+    //       setBalance(
+    //         profile.balance !== undefined
+    //           ? typeof profile.balance === "number"
+    //             ? profile.balance.toFixed(2)
+    //             : parseFloat(profile.balance).toFixed(2)
+    //           : "0.00"
+    //       );
+    //       setWalletAddress(profile.walletAddress || null);
 
-          if (roomIdFromPayload) {
-            try {
-              await apiService.joinRoom(roomIdFromPayload);
-              handleSetCurrentPage("gameRoom", {
-                roomId: roomIdFromPayload,
-                autoSit: true,
-              });
-            } catch (error) {
-              let errorMessage = "";
-              if (
-                axios.isAxiosError(error) &&
-                isErrorResponse(error.response?.data)
-              ) {
-                errorMessage = error.response.data.message;
-              }
+    //       if (roomIdFromPayload) {
+    //         try {
+    //           await apiService.joinRoom(roomIdFromPayload);
+    //           handleSetCurrentPage("gameRoom", {
+    //             roomId: roomIdFromPayload,
+    //             autoSit: true,
+    //           });
+    //         } catch (error) {
+    //           let errorMessage = "";
+    //           if (
+    //             axios.isAxiosError(error) &&
+    //             isErrorResponse(error.response?.data)
+    //           ) {
+    //             errorMessage = error.response.data.message;
+    //           }
 
-              if (
-                errorMessage.toLowerCase().includes("insufficient") ||
-                errorMessage.toLowerCase().includes("funds")
-              ) {
-                handleSetCurrentPage("deposit");
-              } else {
-                console.error("Failed to join room:", error);
-                setCurrentPage("dashboard");
-                setNotification("gameJoinError");
-              }
-            }
-          }
+    //           if (
+    //             errorMessage.toLowerCase().includes("insufficient") ||
+    //             errorMessage.toLowerCase().includes("funds")
+    //           ) {
+    //             handleSetCurrentPage("deposit");
+    //           } else {
+    //             console.error("Failed to join room:", error);
+    //             setCurrentPage("dashboard");
+    //             setNotification("gameJoinError");
+    //           }
+    //         }
+    //       }
 
-          // Создаем единое WebSocket соединение
-          if (!socket) {
-            const socketInstance = initSocket(profile.telegramId, {
-              username: profile.username || 'Unknown',
-              photo_url: profile.avatar || '',
-            });
-            setSocket(socketInstance);
+    //       // Создаем единое WebSocket соединение
+    //       if (!socket) {
+    //         const socketInstance = initSocket(profile.telegramId, {
+    //           username: profile.username || 'Unknown',
+    //           photo_url: profile.avatar || '',
+    //         });
+    //         setSocket(socketInstance);
 
-            // Добавляем обработчики для баланса
-            const handleBalanceUpdate = (event: CustomEvent) => {
-              setBalance(event.detail.balance);
-              if (event.detail.message) {
-                setSuccessMessage(event.detail.message);
-              }
-            };
+    //         // Добавляем обработчики для баланса
+    //         const handleBalanceUpdate = (event: CustomEvent) => {
+    //           setBalance(event.detail.balance);
+    //           if (event.detail.message) {
+    //             setSuccessMessage(event.detail.message);
+    //           }
+    //         };
 
-            window.addEventListener('balanceUpdated', handleBalanceUpdate as EventListener);
+    //         window.addEventListener('balanceUpdated', handleBalanceUpdate as EventListener);
 
-            // Очистка обработчика при размонтировании
-            return () => {
-              window.removeEventListener('balanceUpdated', handleBalanceUpdate as EventListener);
-            };
-          }
-        } catch (error) {
-          const apiError = error as ApiError;
-          const errorMessage =
-            typeof apiError === "string"
-              ? apiError
-              : apiError.message || "Unknown error";
-          console.error(
-            "Login error:",
-            errorMessage,
-            typeof apiError === "object" && apiError.response
-              ? apiError.response.data
-              : "No response data"
-          );
-          setError("Failed to load data. Please try again later.");
-        }
-      };
+    //         // Очистка обработчика при размонтировании
+    //         return () => {
+    //           window.removeEventListener('balanceUpdated', handleBalanceUpdate as EventListener);
+    //         };
+    //       }
+    //     } catch (error) {
+    //       const apiError = error as ApiError;
+    //       const errorMessage =
+    //         typeof apiError === "string"
+    //           ? apiError
+    //           : apiError.message || "Unknown error";
+    //       console.error(
+    //         "Login error:",
+    //         errorMessage,
+    //         typeof apiError === "object" && apiError.response
+    //           ? apiError.response.data
+    //           : "No response data"
+    //       );
+    //       setError("Failed to load data. Please try again later.");
+         
+    //     }
+    //   };
 
-      await loadData();
-    };
+    //   await loadData();
+    // };
 
-    initialize();
+    // initialize();
 
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
+    // return () => {
+    //   if (socket) {
+    //     socket.disconnect();
+    //   }
+    // };
   }, [socket]);
 
   return (
-    <AppRoot appearance={isDark ? "dark" : "light"} platform="base">
+    <AppRoot className="overflow-x-hidden" appearance={isDark ? "dark" : "light"} platform="base">
       <SoundProvider>
         {/* Уведомление об обновлении приложения */}
         {updateAvailable && (
@@ -288,10 +310,14 @@ function App() {
             </button>
           </div>
         )}
-
+        {
+        !isPhoneVertical &&
+          <TurnPhoneOver/>
+        }
         {error ? (
           <ErrorAlert code={undefined} customMessage={error} />
-        ) : currentPage === "more" ? (
+        ) 
+         : currentPage === "more" ? (
           <More userData={userData} setCurrentPage={handleSetCurrentPage} />
         ) : currentPage === "deposit" ? (
           <Deposit setCurrentPage={handleSetCurrentPage} />

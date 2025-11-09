@@ -1,4 +1,4 @@
-import sitdownImage from '@/assets/game/sitdown.png';
+import sitdownArrowImage from '@/assets/game/sitdown_arrow.png';
 import inviteImage from '@/assets/game/invite.png';
 import { useTranslation } from 'react-i18next';
 
@@ -41,7 +41,7 @@ export function SeatButton({ type, position, onSitDown, onInvite, disabled, scal
     fontSize: `${13 * scale}px`,
     lineHeight: '100%',
     textAlign: 'center',
-    color: 'white',
+    color: '#FFFFFFCC',
   };
 
   const inviteTextStyle: React.CSSProperties = {
@@ -55,6 +55,20 @@ export function SeatButton({ type, position, onSitDown, onInvite, disabled, scal
   };
 
   return (
+    type === 'sitdown' ? 
+    <button 
+      onClick={handleClick}
+      className={buttonClasses}
+      disabled={disabled}
+      style={containerStyle}
+    >
+      <div className='absolute w-[71px] h-[71px] border-4 border-[#FFFFFF1A] rounded-full bg-[#232228]'></div>
+      <img src={sitdownArrowImage} className='absolute top-[-5px] object-contain w-[46px] h-[46px] animate-bounce' alt="" />
+      <div className="absolute" style={sitDownTextStyle}>
+        {t('sit_down')}
+      </div>
+    </button>
+    :
     <button 
       onClick={handleClick}
       className={buttonClasses}
@@ -62,12 +76,12 @@ export function SeatButton({ type, position, onSitDown, onInvite, disabled, scal
       style={containerStyle}
     >
       <img 
-        src={type === 'sitdown' ? sitdownImage : inviteImage} 
-        alt={type === 'sitdown' ? t('sit_down') : t('invite')} 
+        src={inviteImage} 
+        alt={t('invite')} 
         className="absolute inset-0 w-full h-full object-contain"
       />
-      <div className="absolute" style={type === 'sitdown' ? sitDownTextStyle : inviteTextStyle}>
-        {type === 'sitdown' ? t('sit_down') : t('invite')}
+      <div className="absolute" style={inviteTextStyle}>
+        {t('invite')}
       </div>
     </button>
   );

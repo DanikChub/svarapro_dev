@@ -44,7 +44,7 @@ export function Filter({ onSearchChange, onAvailabilityChange, onRangeChange }: 
       >
         <div className="relative w-[104px]">
           <input
-            type="text"
+            type="number"
             placeholder={t('room_number')}
             value={searchId}
             onChange={handleSearchChange}
@@ -82,14 +82,9 @@ export function Filter({ onSearchChange, onAvailabilityChange, onRangeChange }: 
           </div>
         </div>
       </StyledContainer>
-      <CSSTransition
-        in={isPanelOpen}
-        timeout={300}
-        classNames="slide-panel"
-        unmountOnExit
-      >
+    
         <SlidePanel isOpen={isPanelOpen} onClose={handleTogglePanel} onRangeChange={onRangeChange} />
-      </CSSTransition>
+      
     </div>
   );
 }

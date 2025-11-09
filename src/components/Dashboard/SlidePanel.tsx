@@ -7,7 +7,7 @@ import { SlidePanelProps } from '@/types/components';
 export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
   const { t } = useTranslation('common');
   const [rangeValues, setRangeValues] = useState<[number, number]>([0, 1000000]);
-
+  const [colorRange, setColorRange] = useState('#807C7C');
   const handleRangeChange = (value: number | number[]) => {
     const newRange = Array.isArray(value) ? value as [number, number] : [0, 1000000];
     // Ограничиваем значения в пределах [0, 1000000] и гарантируем порядок
@@ -16,6 +16,14 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
       Math.max(0, Math.min(newRange[1], 1000000)),
     ].sort((a, b) => a - b) as [number, number];
     const validRange: [number, number] = [minVal, Math.max(minVal, maxVal)]; // Убеждаемся, что max >= min
+
+    if (minVal == 0 && maxVal == 1000000) {
+      setColorRange('#807C7C');
+      console.log(minVal, maxVal)
+    } else {
+      setColorRange('#00D600');
+    }
+
     setRangeValues(validRange);
     onRangeChange(validRange); // Передаём родителю
   };
@@ -32,7 +40,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
         position: 'relative',
         overflow: 'visible',
         zIndex: -1,
-        marginTop: '-5px'
+        marginTop: '0'
       }}
     >
       <div className="relative z-10">
@@ -52,7 +60,9 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
           style={{
             boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
             borderRadius: '15px',
-            width: '96%',
+            width: '100%',
+            marginLeft: '6px',
+            marginRight: '6px',
             height: '34px',
             margin: '0 auto',
             maxWidth: '320px',
@@ -62,15 +72,15 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             border: '1px solid rgba(255, 255, 255, 0.08)'
           }}
         >
-          <div style={{ position: 'relative', height: '22px', width: '80%', zIndex: 10, margin: '0 auto', display: 'flex', alignItems: 'center' }}>
+          <div style={{ position: 'relative', height: '22px', width: '100%', paddingLeft: '23px', paddingRight: '23px', zIndex: 10, margin: '0 auto', display: 'flex', alignItems: 'center' }}>
             <Slider
               range
               min={0}
               max={1000000}
               value={rangeValues}
               onChange={handleRangeChange}
-              railStyle={{ background: 'transparent', borderRadius: '15px', height: '4px' }}
-              trackStyle={[{ background: '#807C7C', height: '4px' }]}
+              railStyle={{ background: '#807C7C', borderRadius: '15px', height: '4px' }}
+              trackStyle={[{ background: colorRange, height: '4px' }]}
               handleStyle={[
                 { 
                   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', 
@@ -95,24 +105,24 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             />
           </div>
         </div>
-        <div className="flex justify-around mt-2 mx-auto" style={{ width: '270px' }}>
+        <div className="flex justify-around mt-2 mx-auto" style={{ width: '281px' }}>
           <span 
             className="text-white"
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
             }}
-          >10</span>
+          >1</span>
           <span 
             className="text-white"
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
@@ -123,7 +133,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
@@ -134,7 +144,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
@@ -145,7 +155,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
@@ -156,7 +166,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'
@@ -167,7 +177,7 @@ export function SlidePanel({ isOpen, onRangeChange }: SlidePanelProps) {
             style={{
               fontWeight: 600,
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               lineHeight: '150%',
               letterSpacing: '-1.1%',
               verticalAlign: 'middle'

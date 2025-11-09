@@ -95,12 +95,13 @@ const GameTable: React.FC<GameTableProps> = ({
 
   const potContainerStyle: React.CSSProperties = {
     position: 'absolute',
-    top: '50%',
+    top: '42%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: 'rgba(19, 18, 23, 0.35)',
-    width: `${80 * scale}px`,
-    height: `${21 * scale}px`,
+    paddingLeft: '5px',
+    paddingRight: '5px',
+    height: `${23 * scale}px`,
     borderRadius: `${2 * scale}px`,
     border: `${0.5 * scale}px solid rgba(255, 255, 255, 0.1)`,
     display: 'flex',
@@ -132,13 +133,13 @@ const GameTable: React.FC<GameTableProps> = ({
   // Стили для надписи "налог 5%"
   const taxStyle: React.CSSProperties = {
     position: 'absolute',
-    top: '54%', // Ближе к контейнеру банка
+    top: '47%', // Ближе к контейнеру банка
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: 'rgba(255, 255, 255, 0.6)', // #FFFFFF 60%
+    color: '#fff', // #FFFFFF 60%
     fontWeight: 400,
-    fontStyle: 'normal',
-    fontSize: `${10 * scale}px`,
+    fontStyle: 'semibold',
+    fontSize: `${11 * scale}px`,
     lineHeight: '100%',
     letterSpacing: '0%',
     textAlign: 'center',
@@ -159,7 +160,7 @@ const GameTable: React.FC<GameTableProps> = ({
       </div>
       
       <div style={potContainerStyle}>
-        <span className="text-xs" style={{ fontSize: `${12 * scale}px` }}>{t('pot', { amount: formattedPot })}</span>
+        <span className="text-sm font-semibold text-white" style={{ fontSize: `${14 * scale}px` }}>{t('pot', { amount: formattedPot })}</span>
       </div>
       
       {/* Надпись "налог 5%" */}

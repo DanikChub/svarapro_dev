@@ -87,9 +87,9 @@ export function CardsDeck({ className, gameStatus }: Props) {
       setAnimatedCards(cards.map((c) => ({ ...c, animate: true })))
     );
 
-    cards.forEach((card) => {
-      setTimeout(() => playSound("deal"), card.delay);
-    });
+    // cards.forEach((card) => {
+    //   setTimeout(() => playSound("deal"), card.delay);
+    // });
 
     const lastCard = cards[cards.length - 1];
     const totalTime = lastCard.delay + 500;

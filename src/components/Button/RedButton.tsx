@@ -11,7 +11,7 @@ export function RedButton({ children, onClick, ...rest }: ButtonProps) {
   };
   return (
     <button
-      className={`text-white rounded-lg w-[85px] h-[28px] flex items-center justify-center ${isPressed ? 'button-press' : ''}`}
+      className={`text-white rounded-[6px] w-[85px] h-[28px] flex items-center justify-center ${isPressed ? 'button-press' : ''}`}
       style={{
         ...rest.style,
         backgroundColor: 'rgb(255 68 58)',

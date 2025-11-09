@@ -9,6 +9,7 @@ export function Button({
   size = 'md',
   fullWidth = false,
   icon,
+  typeLeftButton = false,
   iconPosition = 'left',
   layout = 'horizontal',
   iconClassName = 'w-6 h-6',
@@ -44,11 +45,17 @@ export function Button({
     ? (iconPosition === 'left' ? '-mb-1' : 'mt-0')
     : (iconPosition === 'left' ? 'mr-2' : 'ml-2');
 
-  const renderIcon = (src: string, className: string) => {
-    return <img src={src} alt="" className={className} />;
+  const renderIcon = (src: string, className: string, type: string) => {
+    return type=='left'?<div className='w-8 mr-[7px]'><img src={src} alt="" className={className} /></div>:<img src={src} alt="" className={className} />;
   };
+  // const leftIconElement = icon ? renderIcon(icon, `${iconClassName} ${iconMargin}`) : null; - проверим
+  const leftIconElement = icon ? 
+    typeLeftButton ?
+         renderIcon(icon, `${iconClassName} ${iconMargin}`, 'left') 
+         : 
+         renderIcon(icon, `${iconClassName} ${iconMargin}`, 'center') 
+    : null;
 
-  const leftIconElement = icon ? renderIcon(icon, `${iconClassName} ${iconMargin}`) : null;
 
   const textElement = <span className="relative z-10">{children}</span>;
 
@@ -71,14 +78,14 @@ export function Button({
       <button onClick={handleClick} className={`${baseClasses} ${finalSizeClasses} ${fullWidthClass} ${isPressed ? 'button-press' : ''} ${rest.className || ''}`} {...rest}>
         <StyledContainer
           className="w-full h-full"
-          contentClassName={`w-full h-full flex items-center px-4 ${justifyClass} ${contentLayoutClass}`}
+          contentClassName={`w-full h-full flex items-center px-3 ${justifyClass} ${contentLayoutClass}`}
           isActive={isActive}
         >
           {content}
           {(rightIcon || rightText) && (
             <div className={`ml-auto flex-shrink-0 flex items-center ${rightContentClassName}`}>
               {rightText && <span>{rightText}</span>}
-              {rightIcon && renderIcon(rightIcon, `${rightIconClassName || iconClassName} ml-2`)}
+              {rightIcon && renderIcon(rightIcon, `${rightIconClassName || iconClassName} ml-2`, 'right')}
             </div>
           )}
         </StyledContainer>
@@ -99,7 +106,7 @@ export function Button({
       {(rightIcon || rightText) && (
         <div className={`ml-auto flex-shrink-0 flex items-center ${rightContentClassName}`}>
           {rightText && <span>{rightText}</span>}
-                        {rightIcon && renderIcon(rightIcon, `${rightIconClassName || iconClassName} ml-2`)}
+                        {rightIcon && renderIcon(rightIcon, `${rightIconClassName || iconClassName} ml-2`, 'right')}
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef, useMemo } from "react";
+-import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { GameRoomProps, GameState, Player } from "@/types/game";
 import { NotificationType } from "@/types/components";
 import { Notification } from "@/components/Notification";
@@ -13,7 +13,7 @@ import { PlayerSpot } from "../../components/GameProcess/PlayerSpot";
 import { SeatButton } from "../../components/GameProcess/SeatButton";
 import { UserData, PageData } from "@/types/entities";
 import FlyingChip from "../../components/GameProcess/FlyingChip";
-import FlyingCard from '../../components/GameProcess/FlyingCard';
+// import FlyingCard from '../../components/GameProcess/FlyingCard';
 import { Page } from "@/types/page";
 import backgroundImage from "../../assets/game/background.jpg";
 import menuIcon from "../../assets/game/menu.svg";
@@ -118,7 +118,7 @@ const useTablePositioning = (gameStateLoaded: boolean) => {
     const zIndex = isShowdown ? "z-40" : "z-30";
     const baseClasses = `absolute ${zIndex} transition-all duration-300 ease-in-out hover:scale-105 hover:z-40 w-20 h-24 flex items-center justify-center`;
     const positionClasses = {
-      1: "-top-7 left-1/2",
+      1: "-top-12 left-1/2",
       2: "top-1/4 -right-7",
       3: "bottom-1/4 -right-7",
       4: "-bottom-12 left-1/2",
@@ -197,7 +197,7 @@ export function GameRoom({
   const [chipAnimations, setChipAnimations] = useState<Array<ChipAnimation>>(
     []
   );
-  const [cardAnimations, setCardAnimations] = useState<Array<CardAnimation>>([]);
+  // const [cardAnimations, setCardAnimations] = useState<Array<CardAnimation>>([]);
 
   const getScreenPosition = useCallback(
     (absolutePosition: number) => {
@@ -225,7 +225,7 @@ export function GameRoom({
       if (existingAnimation) {
         return;
       }
-     
+
       actions.playSound("chip");
 
       const absolutePosition = player.position;
@@ -276,47 +276,19 @@ export function GameRoom({
           break;
       }
 
-      let currBet = player.currentBet;
+      const chipId = `chip-${Date.now()}-${Math.random()}`;
 
-      let quantChip = 0;
-      
-      if (currBet < 1000) {
-        quantChip = 12;
-      } 
-      if (currBet < 200) {
-        quantChip = 10;
-      } 
-      if (currBet < 100) {
-        quantChip = 7;
-      } 
-      if (currBet < 50) {
-        quantChip = 5;
-      } 
-      if (currBet < 20) {
-        quantChip = 4;
-      } 
-      if (currBet < 10) {
-        quantChip = 3;
-      } 
-      if (currBet < 5) {
-        quantChip = 1;
-      }
-      
-
-      for (let i = 0; i < quantChip; i++) {
-        const chipId = `chip-${Date.now()}-${Math.random()}`;
-        setChipAnimations((prev) => [
-          ...prev,
-          {
-            id: chipId,
-            fromX: playerX + Math.random() * 21-10,
-            fromY: playerY + Math.random() * 21-10,
-            toX: centerX + Math.random() * 21-10,
-            toY: centerY + Math.random() * 21-10,
-            delay: i * 50, // Небольшая задержка между фишками
-          },
-        ]);
-      }
+      setChipAnimations((prev) => [
+        ...prev,
+        {
+          id: chipId,
+          fromX: playerX,
+          fromY: playerY,
+          toX: centerX,
+          toY: centerY,
+          delay: 0,
+        },
+      ]);
     },
     [
       gameState,
@@ -338,76 +310,53 @@ export function GameRoom({
 
   const handleDealCards = useCallback(() => {
     if (!gameState) return;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    const tableWidth = 315 * scale;
-    const tableHeight = 493 * scale;
-    const verticalOffset = 100;
+    // const centerX = window.innerWidth / 2;
+    // const centerY = window.innerHeight / 2;
+    // const tableWidth = 315 * scale;
+    // const tableHeight = 493 * scale;
+    // const verticalOffset = 100;
 
     // Раздаем по 3 карты каждому активному игроку
+    gameState.players.forEach((player /* playerIndex */) => {
+      if (!player.isActive) return;
 
-    interface array_of_cards_interface {
-      cardDeckX: number;
-      cardDeckY: number;
-      type: 'left' | 'right';
-    }
-    let array_of_cards: Array<array_of_cards_interface> = []
-  
-      gameState.players.forEach((player, playerIndex) => {
-        if (!player.isActive) return;
-  
-        const isCurrentPlayer = player.id === currentUserId;
-        const relativePosition = isCurrentPlayer ? 4 : getScreenPosition(player.position);
-  
-        // Вычисляем позицию игрока
-        let playerX = 0;
-        let playerY = 0;
-  
-        switch (relativePosition) {
-          case 1: playerX = centerX + tableWidth * 0.1; playerY = centerY - tableHeight * 0.44 - verticalOffset; break; // Поднимаем выше
-          case 2: playerX = centerX + tableWidth * 0.27; playerY = centerY - tableHeight * 0.32; break; // Левее и выше
-          case 3: playerX = centerX + tableWidth * 0.27; playerY = centerY + tableHeight * 0.18 - verticalOffset; break; // Левее и выше
-          case 4: playerX = centerX + tableWidth * 0.1; playerY = centerY + tableHeight * 0.52 - verticalOffset; break; // Правее и ниже
-          case 5: playerX = centerX - tableWidth * 0.37; playerY = centerY + tableHeight * 0.18 - verticalOffset; break; // Поднимаем выше
-          case 6: playerX = centerX - tableWidth * 0.37; playerY = centerY - tableHeight * 0.32; break; // Поднимаем выше
-        }
-  
-        // Карты летят в центр компонента игрока
-        const cardDeckX = playerX;
-        const cardDeckY = playerY;
-  
-        switch (relativePosition) {
-          case 1: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'left'});break;
-          case 2: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'right'});break;
-          case 3: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'right'});break; 
-          case 4: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'left'});break; 
-          case 5: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'left'});break; 
-          case 6: array_of_cards.push({cardDeckX: cardDeckX, cardDeckY: cardDeckY, type: 'left'});break;
-        }
-     
-        
-        
-      });
+      // const isCurrentPlayer = player.id === currentUserId;
+      // const relativePosition = isCurrentPlayer ? 4 : getScreenPosition(player.position);
 
-      array_of_cards = [...array_of_cards, ...array_of_cards, ...array_of_cards]
-    
-      array_of_cards.forEach((card, i) => {
-        const cardId = `deal-${i}-${Date.now()}`;
-          setCardAnimations(prev => [...prev, {
-            id: cardId,
-            fromX: centerX,
-            fromY: centerY,
-            toX: card.type == 'left' ? card.cardDeckX-i : card.cardDeckX+i,
-            toY: card.cardDeckY,
-            delay: (i) * 250 // Задержка для последовательной раздачи
-          }]);
-          // Проигрываем звук fold.mp3 для каждой карты с задержкой
-          setTimeout(() => {
-            actions.playSound('fold');
-            console.log('playsound')
-          }, (i) * 250);
-      })
-    
+      // Вычисляем позицию игрока
+      // let playerX = 0;
+      // let playerY = 0;
+
+      // switch (relativePosition) {
+      //   case 1: playerX = centerX; playerY = centerY - tableHeight * 0.5 - verticalOffset; break; // Поднимаем выше
+      //   case 2: playerX = centerX + tableWidth * 0.3; playerY = centerY - tableHeight * 0.3; break; // Левее и выше
+      //   case 3: playerX = centerX + tableWidth * 0.3; playerY = centerY + tableHeight * 0.2 - verticalOffset; break; // Левее и выше
+      //   case 4: playerX = centerX + tableWidth * 0.1; playerY = centerY + tableHeight * 0.5 - verticalOffset; break; // Правее и ниже
+      //   case 5: playerX = centerX - tableWidth * 0.4; playerY = centerY + tableHeight * 0.2 - verticalOffset; break; // Поднимаем выше
+      //   case 6: playerX = centerX - tableWidth * 0.4; playerY = centerY - tableHeight * 0.3; break; // Поднимаем выше
+      // }
+
+      // Карты летят в центр компонента игрока
+      // const cardDeckX = playerX;
+      // const cardDeckY = playerY;
+
+      // Создаем 3 карты для каждого игрока
+      for (let cardIndex = 0; cardIndex < 3; cardIndex++) {
+        // const cardId = `deal-${player.id}-${cardIndex}-${Date.now()}`;
+        // setCardAnimations(prev => [...prev, {
+        //   id: cardId,
+        //   fromX: centerX,
+        //   fromY: centerY,
+        //   toX: cardDeckX,
+        //   toY: cardDeckY,
+        //   delay: (playerIndex * 3 + cardIndex) * 200 // Задержка для последовательной раздачи
+        // }]);
+        // Проигрываем звук fold.mp3 для каждой карты с задержкой
+        // setTimeout(() => {
+        //   actions.playSound('fold');
+        // }, (playerIndex * 3 + cardIndex) * 200);
+      }
+    });
   }, [gameState, actions]);
 
   const handleChipsToWinner = useCallback(() => {
@@ -457,7 +406,7 @@ export function GameRoom({
         break;
       case 4:
         winnerX = centerX;
-        winnerY = centerY + tableHeight * 0.55 - verticalOffset;
+        winnerY = centerY + tableHeight * 0.4 - verticalOffset;
         break;
       case 5:
         winnerX = centerX - tableWidth * 0.4;
@@ -468,7 +417,7 @@ export function GameRoom({
         winnerY = centerY - tableHeight * 0.25;
         break;
     }
-    actions.playSound("chip");
+
     // Подсчитываем количество фишек в банке
     const chipCount = 10;
 
@@ -479,10 +428,10 @@ export function GameRoom({
         ...prev,
         {
           id: chipId,
-          fromX: centerX + Math.random() * 21-10-15,
-          fromY: centerY + Math.random() * 21-10-53,
-          toX: winnerX + Math.random() * 21-10,
-          toY: winnerY + Math.random() * 21-10,
+          fromX: centerX,
+          fromY: centerY,
+          toX: winnerX,
+          toY: winnerY,
           delay: i * 50, // Небольшая задержка между фишками
         },
       ]);
@@ -868,12 +817,12 @@ export function GameRoom({
     });
   }, []);
 
-  const handleCardAnimationComplete = useCallback((cardId: string) => {
-    setCardAnimations(prev => {
-      const newAnimations = prev.filter(card => card.id !== cardId);
-      return newAnimations;
-    });
-  }, []);
+  // const handleCardAnimationComplete = useCallback((cardId: string) => {
+  //   setCardAnimations(prev => {
+  //     const newAnimations = prev.filter(card => card.id !== cardId);
+  //     return newAnimations;
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (pageData?.autoSit && !isSeated && !isSittingDown && gameState) {
@@ -1391,7 +1340,7 @@ export function GameRoom({
             onComplete={handleChipAnimationComplete}
           />
         ))}
-        {cardAnimations.map(card => (
+        {/* {cardAnimations.map(card => (
           <FlyingCard
             key={card.id}
             cardId={card.id}
@@ -1402,7 +1351,7 @@ export function GameRoom({
             delay={card.delay}
             onComplete={handleCardAnimationComplete}
           />
-        ))}
+        ))} */}
       </div>
 
       {/* NoConnect компонент для проблем с подключением */}

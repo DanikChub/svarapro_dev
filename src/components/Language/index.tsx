@@ -28,7 +28,10 @@ export function LanguageSelector({ isOpen, onClose, zIndex }: LanguageSelectorPr
 
   return (
     <Slider isOpen={isOpen} onClose={onClose} height="245px" zIndex={zIndex}>
+
+
         <div className="relative z-10 flex flex-col items-center justify-center h-full">
+        <div className='absolute left-[50%] top-[10px] -translate-x-[50%] bg-[#949494] w-[47px] h-[4px] rounded-2xl bg-opacity-50'></div>
             {LANGUAGES.map((lang) => {
                 const isActive = currentLanguage === lang.code;
                 const isPressed = pressed === lang.code;

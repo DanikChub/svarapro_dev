@@ -59,7 +59,7 @@ const FlyingCard: React.FC<FlyingCardProps> = ({ fromX, fromY, toX, toY, onCompl
 
   return (
     <div
-      className="absolute pointer-events-none"
+      className="absolute pointer-events-none z-[1]"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,

@@ -34,7 +34,7 @@ export function Bids({ className }: Props) {
   return (
     <div
       className={cn(
-        "absolute top-[57.5%] left-[47%] -translate-x-1/2 z-30",
+        "absolute top-[51%] left-[47%] -translate-x-1/2 z-30",
         className
       )}
       id="bids"

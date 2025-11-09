@@ -100,6 +100,7 @@ export type ButtonProps = {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   fullWidth?: boolean;
   icon?: string;
+  typeLeftButton?: boolean;
   iconPosition?: 'left' | 'right';
   layout?: 'horizontal' | 'vertical';
   iconClassName?: string;

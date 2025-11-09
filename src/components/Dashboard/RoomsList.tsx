@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Room } from '@/types/game';
 import { RoomsListProps } from '@/types/components';
 
+import './RoomsList.css'
+
 const ITEMS_PER_PAGE = 10;
 
 export function RoomsList({ searchId, isAvailableFilter, stakeRange, socket, setCurrentPage, balance, setNotification }: RoomsListProps) {
@@ -46,9 +48,13 @@ export function RoomsList({ searchId, isAvailableFilter, stakeRange, socket, set
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedRooms = filteredRooms.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+
+
   return (
     <div className="space-y-4 mx-auto w-[93vw]">
-      <p className="text-white text-center mb-2" style={{ fontWeight: 600 }}>{t('join_game_now')}</p>
+     
+      
+      <p className="adaprive_font text-white text-center mb-2">{t('join_game_now')}</p>
       {paginatedRooms.length > 0 ? (
         paginatedRooms.map((room) => (
           <RoomComponent

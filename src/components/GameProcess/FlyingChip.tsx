@@ -63,8 +63,8 @@ const FlyingChip: React.FC<FlyingChipProps> = ({ fromX, fromY, toX, toY, onCompl
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
-        width: '15px',
-        height: '13px',
+        width: '22px',
+        height: '18px',
         zIndex: 1000,
       }}
     >

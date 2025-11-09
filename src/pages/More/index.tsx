@@ -66,12 +66,14 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={sharpIcon}
+            typeLeftButton={true}
             justify="start"
             onClick={handleCopy}
             rightText={userId}
             rightIcon={copyIcon}
-            rightContentClassName="text-[#BBB9BD]"
-            iconClassName="w-4 h-4"
+            rightContentClassName="text-[#BBB9BD] text-[15px] font-medium"
+            rightIconClassName="ml-[14px] w-[15.48px] h-[18px]"
+            iconClassName="w-[18px] h-[22px]"
             style={{ height: '53px' }}
           >
             {t('my_id')}
@@ -80,12 +82,13 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={languageIcon}
+            typeLeftButton={true}
             justify="start"
             rightText={t(languageKeyMap[currentLanguage] || 'russian')}
             rightIcon={slideDownIcon}
-            rightContentClassName="text-[#BBB9BD]"
-            iconClassName="w-4 h-4"
-            rightIconClassName="w-[15px] h-[7px]"
+            rightContentClassName="text-[#BBB9BD] text-[15px] font-medium"
+            iconClassName="w-[23px] h-[21px]"
+            rightIconClassName="w-[15px] h-[7px] ml-[14px]"
             onClick={() => setShowLanguageSelector(true)}
             style={{ height: '53px' }}
           >
@@ -95,8 +98,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={depositHistoryIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[26px] h-[26px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={() => setCurrentPage('depositHistory')}
             style={{ height: '53px' }}
@@ -107,8 +112,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={refIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[24px] h-[24px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={() => setIsReferralVisible(true)}
             style={{ height: '53px' }}
@@ -119,8 +126,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={channelIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[21px] h-[21px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={handleOpenNewsChannel}
             style={{ height: '53px' }}
@@ -131,8 +140,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={licenseIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[23px] h-[23px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={() => setIsEulaVisible(true)}
             style={{ height: '53px' }}
@@ -143,8 +154,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={helpIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[27px] h-[27px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={() => setIsGamerulesVisible(true)}
             style={{ height: '53px' }}
@@ -155,8 +168,10 @@ export function More({ userData, setCurrentPage }: MoreProps) {
             variant="secondary"
             fullWidth
             icon={supportIcon}
+            typeLeftButton={true}
             rightIcon={rightIcon}
             justify="start"
+            iconClassName="w-[32px] h-[31px]"
             rightIconClassName="w-[6px] h-[17px]"
             onClick={handleOpenSupportChat}
             style={{ height: '53px' }}
